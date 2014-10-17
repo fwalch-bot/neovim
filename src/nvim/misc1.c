@@ -2950,6 +2950,12 @@ char_u *vim_getenv(char_u *name, int *mustfree)
     }
   }
 
+#ifdef USE_EXE_NAME
+  size_t size = 100;
+  char_u exe_name[size];
+  uv_exepath((char *)exe_name, &size);
+#endif
+
   /*
    * When expanding $VIM or $VIMRUNTIME fails, try using:
    * - the directory name from 'helpfile' (unless it contains '$')
@@ -2974,9 +2980,9 @@ char_u *vim_getenv(char_u *name, int *mustfree)
         pend = remove_tail(p, pend, (char_u *)"doc");
 
 #ifdef USE_EXE_NAME
-      /* remove "src/" from exe_name, if present */
+      /* remove "bin/" from exe_name, if present */
       if (p == exe_name)
-        pend = remove_tail(p, pend, (char_u *)"src");
+        pend = remove_tail(p, pend, (char_u *)"bin");
 #endif
 
       /* for $VIM, remove "runtime/" or "vim54/", if present */
@@ -3060,6 +3066,10 @@ static char_u *vim_version_dir(char_u *vimdir)
     return p;
   free(p);
   p = concat_fnames(vimdir, (char_u *)RUNTIME_DIRNAME, TRUE);
+  if (os_isdir(p))
+    return p;
+  free(p);
+  p = concat_fnames(vimdir, (char_u *)RUNTIME_FULL_DIRNAME, TRUE);
   if (os_isdir(p))
     return p;
   free(p);

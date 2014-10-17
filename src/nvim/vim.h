@@ -18,6 +18,7 @@
 #define MAX_MSG_HIST_LEN 200
 #define SYS_OPTWIN_FILE "$VIMRUNTIME/optwin.vim"
 #define RUNTIME_DIRNAME "runtime"
+#define RUNTIME_FULL_DIRNAME "share/nvim/runtime"
 /* end */
 
 /* ============ the header file puzzle (ca. 50-100 pieces) ========= */

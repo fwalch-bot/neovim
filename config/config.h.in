@@ -75,6 +75,7 @@
 #define TIME_WITH_SYS_TIME 1
 #cmakedefine UNIX
 #define USEMAN_S 1
+#define USE_EXE_NAME 1
 
 #define FEAT_BROWSE
 #define FEAT_CSCOPE
