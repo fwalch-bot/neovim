@@ -37,7 +37,7 @@ CMAKE_EXTRA_FLAGS="-DTRAVIS_CI_BUILD=ON \
 
 # Build and output version info.
 $MAKE_CMD CMAKE_EXTRA_FLAGS="$CMAKE_EXTRA_FLAGS -DSANITIZE=ON" nvim
-#build/bin/nvim --version
+build/bin/nvim --version
 #
 ## Run functional tests.
 #if ! $MAKE_CMD test; then
@@ -54,9 +54,67 @@ $MAKE_CMD CMAKE_EXTRA_FLAGS="$CMAKE_EXTRA_FLAGS -DSANITIZE=ON" nvim
 #fi
 #asan_check "$tmpdir"
 
-coveralls --encoding iso-8859-1 || echo 'coveralls upload failed.'
-
-# Test if correctly installed.
+# Install neovim and plugins; run Vader tests.
 sudo -E $MAKE_CMD install
-/usr/local/bin/nvim --version
-/usr/local/bin/nvim -e -c "quit"
+
+mkdir -p ~/.nvim/autoload ~/.nvim/bundle
+wget -q -O ~/.nvim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
+echo 'execute pathogen#infect()' > ~/.nvimrc
+
+add_plugin() {
+	git clone --recursive git://github.com/$1/$2 ~/.nvim/bundle/$2
+	git -C ~/.nvim/bundle/$2 reset --hard $3
+}
+
+remove_plugin() {
+	rm -rf ~/.nvim/bundle/$1
+}
+
+run_tests() {
+	echo "Running Vader tests for $1."
+	cd ~/.nvim/bundle/$1
+	nvim "+Vader! test*/*.vader" && echo "$1 passed" || echo "$1 failed"
+	asan_check "$tmpdir"
+	cd $TRAVIS_BUILD_DIR
+}
+
+test_plugin() {
+	add_plugin $1 $2 $3
+	run_tests $2
+	remove_plugin $2
+}
+
+# simplenote.vim requires Python
+sudo pip install neovim
+
+add_plugin junegunn vader.vim e3c41917948755ac52737b2c627eacbdc5315b33
+run_tests vader.vim
+
+test_plugin junegunn vim-easy-align 2.9.6
+test_plugin junegunn vim-after-object ee6e008506434597b89f0e20cf29e236755736f5
+test_plugin junegunn fzf d38f7a5eb5348859786ff96b96a35eade0e2b0e5
+test_plugin bruno- vim-alt-mappings 6a719284f7cbad4f0105cb8b2f587114c1189834
+test_plugin edkolev erlang-motions.vim e2eca9762b2071437ee7cb15aa774b569c9bbf43
+test_plugin Wolfy87 vim-enmasse 1.1.1
+
+test_plugin mrtazz simplenote.vim v0.9.1
+
+# vim-oblique depends on vim-pseudocl.
+add_plugin junegunn vim-pseudocl 4417db3eb095350594cd6a3e91ec8b78312ef06b
+run_tests vim-pseudocl
+test_plugin junegunn vim-oblique 37a24e58e133561bba0dca8b36d6ef172193571c
+remove_plugin vim-pseudocl
+
+# limelight.vim tests depend on seoul256.vim.
+add_plugin junegunn seoul256.vim 65a04448c293741c7221ead98849912ec0ab0bb0
+run_tests seoul256.vim
+test_plugin junegunn limelight.vim 53887b58391d3b814db0d4c1817e277e35978725
+remove_plugin seoul256.vim
+
+# vim-sneak depends on vim-repeat.
+add_plugin tpope vim-repeat 5eba0f19c87402643eb8a7e7d20d9d5338fd6d71
+test_plugin justinmk vim-sneak 4cc476fbf0ed3ef3f08c9a9de417576e4788d06f
+remove_plugin vim-repeat
+
+# Upload code coverage to coveralls.io.
+coveralls --encoding iso-8859-1 || echo 'coveralls upload failed.'
