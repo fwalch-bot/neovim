@@ -1,5 +1,10 @@
 . "$CI_SCRIPTS/common.sh"
 
+# Pins the version of the java package installed on the Travis VMs
+# and avoids a lengthy upgrade process for them.
+sudo apt-mark hold oracle-java7-installer oracle-java8-installer;
+sudo apt-get update;
+
 # Need this to keep apt-get from removing gcc when installing libncurses
 # below.
 sudo apt-get install libc6-dev libc6-dev:i386

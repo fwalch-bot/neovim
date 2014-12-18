@@ -1,6 +1,6 @@
 . "$CI_SCRIPTS/common.sh"
 
-sudo pip install cpp-coveralls
+pip install cpp-coveralls --user
 
 if [ "$TRAVIS_OS_NAME" = "linux" ]; then
 	clang_version=3.4.2
