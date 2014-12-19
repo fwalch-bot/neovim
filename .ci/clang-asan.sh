@@ -37,22 +37,22 @@ CMAKE_EXTRA_FLAGS="-DTRAVIS_CI_BUILD=ON \
 
 # Build and output version info.
 $MAKE_CMD CMAKE_EXTRA_FLAGS="$CMAKE_EXTRA_FLAGS -DSANITIZE=ON" nvim
-build/bin/nvim --version
-
-# Run functional tests.
-if ! $MAKE_CMD test; then
-	asan_check "$tmpdir"
-	exit 1
-fi
-asan_check "$tmpdir"
-
-# Run legacy tests.
-if ! $MAKE_CMD oldtest; then
-	reset
-	asan_check "$tmpdir"
-	exit 1
-fi
-asan_check "$tmpdir"
+#build/bin/nvim --version
+#
+## Run functional tests.
+#if ! $MAKE_CMD test; then
+#	asan_check "$tmpdir"
+#	exit 1
+#fi
+#asan_check "$tmpdir"
+#
+## Run legacy tests.
+#if ! $MAKE_CMD oldtest; then
+#	reset
+#	asan_check "$tmpdir"
+#	exit 1
+#fi
+#asan_check "$tmpdir"
 
 coveralls --encoding iso-8859-1 || echo 'coveralls upload failed.'
 

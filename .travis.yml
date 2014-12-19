@@ -17,18 +17,18 @@ env:
     - CFLAGS='-DMIN_LOG_LEVEL=0'
   matrix:
     - CI_TARGET=clang-asan
-    - CI_TARGET=gcc
-    - CI_TARGET=gcc-32
-    - CI_TARGET=clint
+    # CI_TARGET=gcc
+    # CI_TARGET=gcc-32
+    # CI_TARGET=clint
 matrix:
-  include:
-    - os: osx
-      env: CI_TARGET=clang-asan
-    - os: osx
-      env: CI_TARGET=gcc
-      compiler: gcc-4.9
-  allow_failures:
-    - os: osx
+  #include:
+  #  - os: osx
+  #    env: CI_TARGET=clang-asan
+  #  - os: osx
+  #    env: CI_TARGET=gcc
+  #    compiler: gcc-4.9
+  #allow_failures:
+  #  - os: osx
 before_install:
   # Pins the version of the java package installed on the Travis VMs
   # and avoids a lengthy upgrade process for them.
