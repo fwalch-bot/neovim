@@ -90,8 +90,6 @@ test_plugin() {
 #   Dependencies: vim-pseudocl 4417db3eb095350594cd6a3e91ec8b78312ef06b
 # junegunn limelight.vim 53887b58391d3b814db0d4c1817e277e35978725
 #   Dependencies: seoul256.vim 65a04448c293741c7221ead98849912ec0ab0bb0
-# justinmk vim-sneak 4cc476fbf0ed3ef3f08c9a9de417576e4788d06f
-#   Dependencies: tpope vim-repeat 5eba0f19c87402643eb8a7e7d20d9d5338fd6d71
 # junegunn vim-easy-align 2.9.6
 # junegunn vader.vim 4d100399fe3ebddbb4738fc5b409d36686c6382c
 # junegunn fzf d38f7a5eb5348859786ff96b96a35eade0e2b0e5
@@ -107,6 +105,10 @@ test_plugin bruno- vim-alt-mappings 6a719284f7cbad4f0105cb8b2f587114c1189834
 test_plugin Wolfy87 vim-enmasse 1.1.1
 test_plugin mrtazz simplenote.vim v0.9.1
 test_plugin junegunn seoul256.vim 65a04448c293741c7221ead98849912ec0ab0bb0
+
+add_plugin tpope vim-repeat 5eba0f19c87402643eb8a7e7d20d9d5338fd6d71
+test_plugin justinmk vim-sneak 1.7.4
+remove_plugin vim-repeat
 
 # Upload code coverage to coveralls.io.
 coveralls --encoding iso-8859-1 || echo 'coveralls upload failed.'
