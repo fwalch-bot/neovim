@@ -103,7 +103,7 @@ add_plugin junegunn vader.vim 4d100399fe3ebddbb4738fc5b409d36686c6382c
 test_plugin junegunn vim-after-object ee6e008506434597b89f0e20cf29e236755736f5
 test_plugin bruno- vim-alt-mappings 6a719284f7cbad4f0105cb8b2f587114c1189834
 test_plugin Wolfy87 vim-enmasse 1.1.1
-test_plugin mrtazz simplenote.vim v0.9.1
+#test_plugin mrtazz simplenote.vim v0.9.1
 test_plugin junegunn seoul256.vim 65a04448c293741c7221ead98849912ec0ab0bb0
 
 add_plugin tpope vim-repeat 5eba0f19c87402643eb8a7e7d20d9d5338fd6d71
