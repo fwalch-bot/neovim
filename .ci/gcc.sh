@@ -6,13 +6,16 @@ if [ "$TRAVIS_OS_NAME" = "linux" ]; then
 	sudo apt-get install valgrind
 	export VALGRIND=1
 	export VALGRIND_LOG="$tmpdir/valgrind-%p.log"
+	CMAKE_EXTRA_FLAGS="-DTRAVIS_CI_BUILD=ON \
+		-DUSE_GCOV=ON \
+		-DBUSTED_OUTPUT_TYPE=plainTerminal"
+else
+	CMAKE_EXTRA_FLAGS="-DTRAVIS_CI_BUILD=ON \
+		-DUSE_GCOV=ON \
+		-DBUSTED_OUTPUT_TYPE=TAP"
 fi
 
 setup_deps x64
-
-CMAKE_EXTRA_FLAGS="-DTRAVIS_CI_BUILD=ON \
-	-DUSE_GCOV=ON \
-	-DBUSTED_OUTPUT_TYPE=plainTerminal"
 
 # Build and output version info.
 $MAKE_CMD CMAKE_EXTRA_FLAGS="$CMAKE_EXTRA_FLAGS" nvim

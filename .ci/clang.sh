@@ -25,7 +25,7 @@ if [ "$TRAVIS_OS_NAME" = "linux" ]; then
 else
 	CMAKE_EXTRA_FLAGS="-DTRAVIS_CI_BUILD=ON \
 		-DUSE_GCOV=ON \
-		-DBUSTED_OUTPUT_TYPE=plainTerminal"
+		-DBUSTED_OUTPUT_TYPE=TAP"
 fi
 
 setup_deps x64
